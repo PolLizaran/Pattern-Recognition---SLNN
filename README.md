@@ -41,6 +41,9 @@ In order to study the results obtained in a more in-depth way, we decided to imp
 - - -
 
 ## Authors
-Pol Lizaran Campano (https://github.com/PolLizaran) & Clàudia Mur Planchart (https://github.com/claudiamur)
+
+Copyright © 2022 Pol Lizaran Campano (https://github.com/PolLizaran) & Clàudia Mur Planchart (https://github.com/claudiamur)
+
+This project is available under the terms of the GNU General Public License v3. See LICENSE for more information.
 
 Data Science and Engineering, UPC, 2022
