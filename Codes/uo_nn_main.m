@@ -6,8 +6,8 @@ num_target =[1];
 tr_freq    = .5;        
 tr_p       = 250;       
 te_q       = 250;       
-tr_seed    = 49290219; % Pol's DNI   
-te_seed    = 49362111; % Claudia's DNI   
+tr_seed    = 49290219;  
+te_seed    = 49362111;   
 %
 % Parameters for optimization
 %
