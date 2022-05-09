@@ -1,0 +1,298 @@
+---
+title: "OM - SLNN Code Plots"
+author: "Pol Lizaran & Claudia Mur"
+date: "5/4/2022"
+output: pdf_document
+---
+
+## **Part 1**
+
+```{r}
+sol_1 <- read.csv(file = 'uo_nn_batch_49362111-49290219Part1.csv', dec = ".", sep = ";", header = TRUE)
+```
+
+```{r}
+library(ggplot2)
+
+la.factor = as.factor(sol_1$la)
+isd.factor = as.factor(sol_1$isd)
+num_target.factor = as.factor(sol_1$num_target)
+levels(isd.factor) = c("GM", "QNM", "SGM")
+sol_1 = cbind(sol_1, la.factor, isd.factor, num_target.factor) 
+sol_1
+```
+
+```{r}
+sample1 <- sol_1[,"isd"] == 1
+isd1 <- subset(sol_1, sample1 == TRUE) 
+sample2 <- sol_1[,"isd"] == 3
+isd3 <- subset(sol_1, sample2 == TRUE)
+sample3 <- sol_1[,"isd"] == 7
+isd7 <- subset(sol_1, sample3 == TRUE)
+```
+
+## a)
+
+```{r}
+ggplot(isd1, aes(x=la.factor,y=L.)) + geom_boxplot(color = c("#FFB6C1", "#FF82AB", "#8B475D")) +
+  labs(title = "Boxplot for the optimal value of L by lambda values", x = "lambda", y = "Optimal L") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5)) 
+```
+
+```{r}
+ggplot(sol_1, aes(x = la.factor, y = L. , fill = isd.factor)) + 
+  geom_bar(stat = "identity") +
+  labs(title = "Bar chart for the optimal value of L by lambda values", x = "lambda", y = "Optimal L", fill = "Method") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
+  scale_fill_manual(values = c('#EEAEEE','#4EEE94','#EEC591')) 
+
+```
+
+```{r}
+ggplot(isd1, aes(x=la.factor,y=L.)) + geom_boxplot(color = c("#FFB6C1", "#FF82AB", "#8B475D")) +
+  labs(title = "Boxplot for the optimal L of GM by lambda values", x = "lambda", y = "Optimal L") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5)) 
+
+
+ggplot(isd3, aes(x=la.factor,y=L.)) + geom_boxplot(color = c("#FFB6C1", "#FF82AB", "#8B475D")) +
+  labs(title = "Boxplot for the optimal L of QNM by lambda values", x = "lambda", y = "Optimal L") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5)) 
+
+
+mean(isd1$L.)
+mean(isd3$L.)
+mean(isd7$L.)
+```
+
+## b)
+
+```{r}
+sol_2 <- read.csv(file = 'uo_nn_batch_49362111-49290219Part2.csv', dec = ".", sep = ";", header = TRUE)
+la.factor2 = as.factor(sol_2$la)
+isd.factor2 = as.factor(sol_2$isd)
+num_target.factor2 = as.factor(sol_2$num_target)
+levels(isd.factor2) = c("GM", "QNM", "SGM")
+sol_2 = cbind(sol_2, la.factor2, isd.factor2, num_target.factor2) 
+```
+
+## i.)
+
+```{r}
+sol_1$niter[sol_1$isd == 7] <- sol_1$niter[sol_1$isd == 7]/125
+```
+
+```{r}
+ggplot(data=sol_1, aes(tex, num_target)) +
+  geom_point(aes(color = isd.factor)) +
+  scale_y_discrete(limits=c(0:9))+
+  scale_color_manual(values=c('#FFB90F','#00BFFF','#FF82AB'))+
+  facet_wrap(~ isd.factor) +
+  labs(title = "Plot of the execution time by each method", x = "Time of execution (s)", y = "Target number", color = "Method") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5)) 
+```
+
+```{r}
+mean(isd1[,"tex"])
+mean(isd3[,"tex"])
+mean(isd7[,"tex"])
+```
+
+## ii.) 
+
+```{r}
+ggplot(sol_1, aes(x = num_target, y = tex, fill = la.factor)) + 
+  geom_bar(stat = "identity") +
+  scale_x_discrete(limits=c(0:9))+
+  scale_fill_manual(values = c("#FFB6C1", "#FF82AB", "#8B475D")) +
+  labs(title = "Stacked bar chart by lambda values", x = "Target number", y = "Number of iterations", fill = "Lambda") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5)) 
+```
+
+```{r}
+ggplot(sol_1, aes(x = isd.factor, y = niter, color = la.factor)) +
+  geom_boxplot() +
+  scale_color_manual(values = c("#FFB6C1", "#FF82AB", "#8B475D")) +
+  labs(title = "Boxlot of the (normalized) number of iterations for each method", x = "Algorithm", y = "Number of iterations", 
+       color = "Lambda") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.position="top") +
+  scale_fill_manual(values = c('#EEAEEE','#4EEE94','#EEC591'))  +
+  coord_cartesian(ylim = c(0, 1050), expand = FALSE) 
+```
+
+```{r}
+ggplot(sol_1, aes(x = isd.factor, y = tex, color = la.factor)) +
+  geom_boxplot() +
+  scale_color_manual(values = c("#FFB6C1", "#FF82AB", "#8B475D")) +
+  labs(title = "Boxlot of the time of execution for each method", x = "Algorithm", y = "Time of execution", color = "Lambda") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.position="top") +
+  scale_fill_manual(values = c('#EEAEEE','#4EEE94','#EEC591')) +
+  coord_cartesian(ylim = c(0, 3), expand = FALSE) 
+```
+
+
+## iii.)
+
+```{r}
+# Running time per iteration en funció isd
+ggplot(sol_1, aes(x = isd.factor, y = tex/niter, fill = la.factor)) + 
+  geom_bar(stat = "identity") +
+  labs(title = "Stacked bar chart of the tex/niter for method used", x = "Method", y = "Tex/Niter", fill = "Lambda") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
+  scale_fill_manual(values = c("#FFB6C1", "#FF82AB", "#8B475D")) 
+```
+
+
+```{r}
+ggplot(data=sol_1, aes(x = tex/niter, y = isd.factor, fill = la.factor)) +
+  geom_boxplot() +
+  scale_color_manual(values=c("#FFB6C1", "#FF82AB", "#8B475D")) +
+  labs(title = "Boxlot of Tex/Niter for each method and lambda", x = "Tex/Niter", y = "Algorithm", fill = "Lambda") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.position="top") +
+  scale_fill_manual(values = c("#FFB6C1", "#FF82AB", "#8B475D")) 
+```
+
+
+```{r}
+sol_1$niter[sol_1$isd == 7] <- sol_1$niter[sol_1$isd == 7]*125
+
+ggplot(data=sol_1, aes(x = tex/niter, y = isd.factor, fill = isd.factor)) +
+  geom_boxplot(notch  = TRUE) +
+  scale_color_manual(values=c('#EEAEEE','#4EEE94','#EEC591')) +
+  labs(title = "Boxlot of Tex/Niter for each method without normalizing", x = "Tex/Niter", y = "Algorithm", fill = "Method") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.position="top") +
+  scale_fill_manual(values = c('#EEAEEE','#4EEE94','#EEC591')) 
+```
+
+## Part 2
+
+## a)
+```{r}
+sol_2 <- read.csv(file = 'uo_nn_batch_49362111-49290219Part2.csv', dec = ".", sep = ";", header = TRUE)
+la.factor2 = as.factor(sol_2$la)
+isd.factor2 = as.factor(sol_2$isd)
+num_target.factor2 = as.factor(sol_2$num_target)
+levels(isd.factor2) = c("GM", "QNM", "SGM")
+sol_2 = cbind(sol_2, la.factor2, isd.factor2, num_target.factor2) 
+```
+
+
+```{r}
+ggplot(data=sol_2, aes(tex, num_target)) +
+  geom_point(aes(color = isd.factor2)) +
+  scale_y_discrete(limits=c(0:9))+
+  scale_color_manual(values=c('#FFB90F','#00BFFF','#FF82AB'))+
+  facet_wrap(~ isd.factor2) +
+  labs(title = "Plot of the execution time by each method", x = "Time of execution (s)", y = "Target number", color = "Method") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5)) 
+```
+```{r}
+ggplot(data=sol_2, aes(niter, num_target)) +
+  geom_point(aes(color = isd.factor2)) +
+  scale_y_discrete(limits=c(0:9))+
+  scale_color_manual(values=c('#EEAEEE','#4EEE94','#EEC591'))+
+  facet_wrap(~ isd.factor2) +
+  labs(title = "Plot of number of iterations by each method", x = "Number of iterations", y = "Target number", color = "Method") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.position = "top") 
+```
+```{r}
+
+ggplot(data=sol_2, aes(niter, num_target)) +
+  geom_point(aes(color = isd.factor2)) +
+  scale_y_discrete(limits=c(0:9))+
+  scale_color_manual(values=c('#EEAEEE','#4EEE94','#EEC591'))+
+  facet_wrap(~ isd.factor2) +
+  labs(title = "Plot of number of iterations by each method", x = "Number of iterations", y = "Target number", color = "Method") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5)) + xlim(0,22500)
+```
+
+
+```{r}
+# Splitting by method
+sample1 <- sol_2[,"isd"] == 1
+isd1_2 <- subset(sol_2, sample1 == TRUE) 
+sample2 <- sol_2[,"isd"] == 3
+isd3_2 <- subset(sol_2, sample2 == TRUE)
+sample3 <- sol_2[,"isd"] == 7
+isd7_2 <- subset(sol_2, sample3 == TRUE)
+```
+
+```{r}
+mean(isd1_2[,"tex"])
+mean(isd3_2[,"tex"])
+mean(isd7_2[,"tex"])
+```
+
+```{r}
+ggplot(data=sol_2, aes(niter, num_target)) +
+  geom_point(aes(color = isd.factor2)) +
+  scale_y_discrete(limits=c(0:9))+
+  scale_color_manual(values=c('#EEAEEE','#4EEE94','#EEC591'))+
+  facet_wrap(~ isd.factor2) +
+  labs(title = "Plot of number of iterations (normalized) by each method", x = "Number of iterations", y = "Target number", color = "Method") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5))  + xlim(0,1001)
+```
+```{r}
+ggplot(sol_2, aes(isd.factor2, tr_acc, fill = isd.factor2)) +
+  geom_boxplot() +
+  scale_fill_manual(values=c('#EEAEEE','#4EEE94','#EEC591')) +
+  labs(title = "Boxplot of training accuracy by each method", x = "Algorithm", y = "Accuracy (100%)", fill = "Method") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.position="top") 
+```
+
+```{r}
+ggplot(data=sol_2, aes(isd.factor2, tr_acc, fill = la.factor2)) +
+  geom_boxplot() +
+  scale_fill_manual(values=c("#FFB6C1", "#FF82AB", "#8B475D")) +
+  labs(title = "Boxplot of training accuracy by each method and lambda", x = "Algorithm", y = "Accuracy (100%)", fill = "Lambda") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.position="top")
+  
+```
+
+```{r}
+sol_2$niter[sol_2$isd == 7] <- sol_2$niter[sol_2$isd == 7]/100
+```
+
+
+```{r}
+ggplot(data=sol_2, aes(niter, num_target)) +
+  geom_point(aes(color = isd.factor2)) +
+  scale_y_discrete(limits=c(0:9))+
+  scale_color_manual(values=c('#EEAEEE','#4EEE94','#EEC591'))+
+  facet_wrap(~ isd.factor2) +
+  labs(title = "Plot of number of iterations by each method (zoomed)", x = "Number of iterations", y = "Target number", color = "Method") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.position = "top")  + xlim(0,1500)
+
+```
+
+
+
+```{r}
+mean(isd1_2[,"niter"])
+mean(isd3_2[,"niter"])
+mean(isd7_2[,"niter"])
+```
+
+
+```{r}
+mean(isd1_2[,"te_acc"])
+mean(isd3_2[,"te_acc"])
+mean(isd7_2[,"te_acc"])
+```
+
+```{r}
+mean(isd1_2[,"tr_acc"])
+mean(isd3_2[,"tr_acc"])
+mean(isd7_2[,"tr_acc"])
+```
+
+## b) 
+
+```{r}
+ggplot(data=sol_2, aes(la.factor2, te_acc, fill = isd.factor2)) +
+  geom_boxplot() +
+  scale_fill_manual(values=c('#EEAEEE','#4EEE94','#EEC591')) +
+  labs(title = "Boxplot of test accuracy by lambda values", x = "Algorithm", y = "Accuracy (100%)", fill = "Lambda") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.position="top")
+```
+
+
