@@ -22,8 +22,8 @@ The output signal of the SLNN, assumed to be binary, was obtained through Ridge 
 2. Run the file.
 3. Wait for the results that will be redirected into the `.csv` file. 
 
-`uo_nn_batch.m` calls the function `uo_nn_solve`, that is the main function of the project. Firstly generates a training and test datasets by calling to the function `uo_nn_dataset.m`. Secondly it defines the Loss function and later on it calls to the correspondant algorithm that has been selected. 
-Once the optimization algorithms end, the results obtained are checked to work on a different data set (test). By last, if desired, the last line of the cose can be uncommented and `uo_nn_Xyplot.m` will be called and a graphical interface with the results will be displayed.
+`uo_nn_batch.m` calls the function `uo_nn_solve`, that is the main function of the project. Firstly it generates training and test datasets by calling to the function `uo_nn_dataset.m`. Secondly it defines the Loss function and later on it calls to the correspondant algorithm that has been selected. 
+Once the optimization algorithms end, the results obtained are verified to work with a different data set (test). By last, if desired, the last line of the code can be uncommented and `uo_nn_Xyplot.m` will be called and a graphical interface with the results will be displayed.
 
 ## Objectives
 
