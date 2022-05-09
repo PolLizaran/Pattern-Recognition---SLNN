@@ -7,7 +7,7 @@ The aim of this project was to be capable of recognizing the numbers in a sequen
 To make that study, three well-known unconstrained optimization algorithms were used: Gradient Method (`GM`), Quasi-Newton Methods (`QNM`), specifically `BFGS` & Stochastic Gradient Method (`SGM`). 
 The procedure to achieve that goal was to formulate a Single Layer Neural Network (`SLNN`) that was trained to recognize the different numbers with First Derivative Optimization methods.
 
-The output signal of the SLNN, assumed to be binary, was obtained through Ridge Regression, thus being the function to minimize: $\~{L}(X^{TR}, y^{TR}, \lambda) = L(w; X^{TR}, y^{TR}) + \lambda \cdot \dfrac{\|w\|^2}{2}$
+The output signal of the SLNN, assumed to be binary, was obtained through Ridge Regression, thus being the function to minimize: $\~{L}(X^{TR}, y^{TR}, \lambda) = L(w; X^{TR}, y^{TR}) + \lambda \cdot \dfrac{\|\|w\|\|^2}{2}$
 
 ## Parameters
 
